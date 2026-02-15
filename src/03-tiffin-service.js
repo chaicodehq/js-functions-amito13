@@ -1,3 +1,5 @@
+
+
 /**
  * 🍱 Mumbai Tiffin Service - Plan Builder
  *
@@ -39,14 +41,72 @@
  *   combinePlans(plan1, plan2, plan3)
  *   // => { totalCustomers: 3, totalRevenue: 7200, mealBreakdown: { veg: 2, nonveg: 1 } }
  */
-export function createTiffinPlan({ name, mealType = "veg", days = 30 } = {}) {
-  // Your code here
-}
+export function createTiffinPlan(
+  { name, mealType = "veg", days = 30 } = {}
+) {
+  if (!name || name.trim() === "") return null;
 
+  let priceMap = {
+    veg: 80,
+    nonveg: 120,
+    jain: 90
+  };
+
+  if (!priceMap[mealType]) return null;
+
+  let dailyRate = priceMap[mealType];
+  let totalCost = dailyRate * days;
+
+  return {
+    name,
+    mealType,
+    days,
+    dailyRate,
+    totalCost
+  };
+}
 export function combinePlans(...plans) {
-  // Your code here
+
+      if(plans.length===0) return null
+      let totalCustomers = plans.length
+      let totalRevenue = 0
+      let mealBreakdown = {}
+
+        let plan 
+      for( plan of plans)
+        {
+         totalRevenue += plan.totalCost;
+      
+
+            if (mealBreakdown[plan.mealType]) {
+            mealBreakdown[plan.mealType]++;
+          } else {
+            mealBreakdown[plan.mealType] = 1;
+          }
+        }
+      return {
+        totalCustomers,totalRevenue,mealBreakdown
+      }
 }
 
 export function applyAddons(plan, ...addons) {
-  // Your code here
+
+      if(plan===null) return null
+      let new_plan = structuredClone(plan)
+      if(addons.length===0) return new_plan
+      
+      let totalAddonPrice = 0
+      let addonNames = []
+
+      for(let addon of addons){
+         totalAddonPrice += addon.price;
+          addonNames.push(addon.name);
+      }
+      new_plan.dailyRate += totalAddonPrice
+
+       new_plan.totalCost = new_plan.dailyRate * new_plan.days;
+
+        new_plan.addonNames = addonNames;
+
+        return new_plan
 }

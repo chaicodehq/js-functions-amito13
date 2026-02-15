@@ -45,13 +45,73 @@
  *   pricer("gold", true)  // => 200 * 1.5 * 1.3 = 390
  */
 export function createDialogueWriter(genre) {
-  // Your code here
+    const templates = {
+      action: (hero, villain) =>
+        `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`,
+
+      romance: (hero, villain) =>
+        `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`,
+
+      comedy: (hero, villain) =>
+        `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`,
+
+      drama: (hero, villain) =>
+        `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+    };
+
+    if (!templates[genre]) return null;
+
+    return (hero,villain)=>{
+      if (!hero || !villain) return "...";
+      return templates[genre](hero,villain)
+    }
 }
 
 export function createTicketPricer(basePrice) {
-  // Your code here
+
+    if (typeof basePrice !== "number" || basePrice <= 0) {
+        return null;
+      }
+    let seat   = {
+      silver:1,
+      gold:1.5,
+      platinum:2
+    }
+    
+    return (seatType,isWeekend = false)=>{
+       if (!seat[seatType]) return null;
+       let finalPrice = basePrice * seat[seatType]
+       
+       if(isWeekend) finalPrice *=1.3
+
+       return Math.round(finalPrice)
+    }
+    
 }
 
 export function createRatingCalculator(weights) {
-  // Your code here
+//    createRatingCalculator(weights)
+//  *      - Factory: returns a function (scores) => weighted average
+//  *      - weights: { story: 0.3, acting: 0.3, direction: 0.2, music: 0.2 }
+//  *      - scores: { story: 8, acting: 9, direction: 7, music: 8 }
+//  *      - Weighted avg = sum of (score * weight) for matching keys
+//  *      - Round to 1 decimal place
+//  *      - Agar weights not an object => return null
+
+if (typeof weights !== "object" || weights === null || Array.isArray(weights)) {
+    return null;
+  }
+    return (scores)=>{
+       if (typeof scores !== "object" || scores === null) return null;
+
+        let total = 0;
+        for (let key in weights) {
+      if (scores.hasOwnProperty(key)) {
+        total += scores[key] * weights[key];
+      }
+    }
+
+    return Number(total.toFixed(1));
+  
+    }
 }
