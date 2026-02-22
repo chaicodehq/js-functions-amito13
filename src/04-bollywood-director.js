@@ -90,13 +90,7 @@ export function createTicketPricer(basePrice) {
 }
 
 export function createRatingCalculator(weights) {
-//    createRatingCalculator(weights)
-//  *      - Factory: returns a function (scores) => weighted average
-//  *      - weights: { story: 0.3, acting: 0.3, direction: 0.2, music: 0.2 }
-//  *      - scores: { story: 8, acting: 9, direction: 7, music: 8 }
-//  *      - Weighted avg = sum of (score * weight) for matching keys
-//  *      - Round to 1 decimal place
-//  *      - Agar weights not an object => return null
+
 
 if (typeof weights !== "object" || weights === null || Array.isArray(weights)) {
     return null;
